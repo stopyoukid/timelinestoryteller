@@ -1401,7 +1401,7 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
   function initTimelineData(data) {
     var unique_values = d3.map([]);
     var unique_data = [];
-    
+
     globals.timeline_json_data = data;
 
     data.forEach(function (d) {
@@ -3033,7 +3033,8 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
     // parse the event dates
     // assign an end date if none is provided
     data.forEach(function (item) {
-      if (item.end_date === "" || item.end_date === null) { // if end_date is empty, set it to equal start_date
+      if (item.end_date == "" || item.end_date == null) {
+        // if end_date is empty, set it to equal start_date
         item.end_date = item.start_date;
       }
 
@@ -3045,69 +3046,42 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
         return;
       }
 
-      // watch out for dates that start/end in BC
-      var bc_start;
-      var bc_end;
-
       // is start date a numeric year?
       if (globals.isNumber(item.start_date)) {
-        if (item.start_date < 1) {// is start_date is before 1 AD?
-          bc_start = item.start_date;
-        }
-
-        if (item.end_date < 1) {// is end_date is before 1 AD?
-          bc_end = item.end_date;
-        }
-
         // convert start_date to date object
-        item.start_date = moment((new Date(item.start_date))).toDate();
+        item.start_date = moment(item.start_date, "Y-MM-DD HH:mm Z").toDate();
 
+        // leaving the original logic here, adding given story timezone offset
         if (isStory(globals.source_format)) {
-          item.start_date = new Date(item.start_date.valueOf() + (globals.story_tz_offset * 60000));
-        } else {
-          item.start_date = new Date(item.start_date.valueOf() + item.start_date.getTimezoneOffset() * 60000);
+          item.start_date = moment(item.start_date).subtract(item.start_date.getTimezoneOffset(), "minutes")
+            .add(globals.story_tz_offset, "minutes").toDate();
         }
 
         // convert end_date to date object
-        item.end_date = moment((new Date(item.end_date))).toDate();
+        item.end_date = moment(item.end_date, "Y-MM-DD HH:mm Z").toDate();
 
+        // leaving the original logic here, adding given story timezone offset
         if (isStory(globals.source_format)) {
-          item.end_date = new Date(item.end_date.valueOf() + (globals.story_tz_offset * 60000));
-        } else {
-          item.end_date = new Date(item.end_date.valueOf() + item.end_date.getTimezoneOffset() * 60000);
+          item.end_date = moment(item.end_date).subtract(item.end_date.getTimezoneOffset(), "minutes")
+            .add(globals.story_tz_offset, "minutes").toDate();
         }
 
         item.event_id = i;
         globals.active_event_list.push(i);
         i++;
 
-        // is end_date = start_date?
-        if (item.end_date === item.start_date) {
-          // if yes, set end_date to end of year
-          item.end_date = moment(item.end_date).endOf("year").toDate();
-        } else { // if end year given, set end_date to end of that year as date object
-          item.end_date = moment(item.end_date).endOf("year").toDate();
-        }
-
-        // if start_date before 1 AD, set year manually
-        if (bc_start) {
-          item.start_date.setUTCFullYear(("0000" + bc_start).slice(-4) * -1);
-        }
-
-        // if end_date before 1 AD, set year manually
-        if (bc_end) {
-          item.end_date.setUTCFullYear(("0000" + bc_end).slice(-4) * -1);
-        }
+        // set end_date to end of that year as date object
+        item.end_date = moment(item.end_date).endOf("year").toDate();
       } else { // start date is not a numeric year
         globals.date_granularity = "days";
-
         // check for start_date string validity
         if (moment(item.start_date).isValid()) {
-          item.start_date = moment(item.start_date).startOf("hour").toDate(); // account for UTC offset
+          item.start_date = moment(item.start_date, "Y-MM-DD HH:mm Z").startOf("hour").toDate(); // account for UTC offset
+
+          // leaving the original logic here, adding given story timezone offset
           if (isStory(globals.source_format)) {
-            item.start_date = new Date(item.start_date.valueOf() + (globals.story_tz_offset * 60000));
-          } else {
-            item.start_date = new Date(item.start_date.valueOf() + item.start_date.getTimezoneOffset() * 60000);
+            item.start_date = moment(item.start_date).subtract(item.start_date.getTimezoneOffset(), "minutes")
+              .add(globals.story_tz_offset, "minutes").toDate();
           }
           item.event_id = i;
           globals.active_event_list.push(i);
@@ -3118,11 +3092,12 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
 
         // check for end_date string validity
         if (moment(item.end_date).isValid()) {
-          item.end_date = moment(item.end_date).endOf("hour").toDate(); // account for UTC offset
+          item.end_date = moment(item.end_date, "Y-MM-DD HH:mm Z").endOf("hour").toDate(); // account for UTC offset
+
+          // leaving the original logic here, adding given story timezone offset
           if (isStory(globals.source_format)) {
-            item.end_date = new Date(item.end_date.valueOf() + (globals.story_tz_offset * 60000));
-          } else {
-            item.end_date = new Date(item.end_date.valueOf() + item.end_date.getTimezoneOffset() * 60000);
+            item.end_date = moment(item.end_date).subtract(item.end_date.getTimezoneOffset(), "minutes")
+              .add(globals.story_tz_offset, "minutes").toDate();
           }
         } else {
           item.end_date = undefined;
@@ -4500,7 +4475,7 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
    * @param {number} min_story_height The minimum height to show the story
    * @returns {void}
    */
-  this._loadDataFromStory = function(story, min_story_height) {
+  this._loadDataFromStory = function (story, min_story_height) {
     var timelineData = globals.timeline_json_data;
 
     // The original format

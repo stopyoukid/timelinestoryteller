@@ -647,16 +647,10 @@ d3.configurableTL = function (unit_width) {
               }
               var start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               var end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4) * -1)]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
+
               break;
             case "centuries":
               year_offset = 20;
@@ -667,16 +661,9 @@ d3.configurableTL = function (unit_width) {
               }
               start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4) * -1)]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
               break;
             case "millenia":
               year_offset = 200;
@@ -687,16 +674,9 @@ d3.configurableTL = function (unit_width) {
               }
               start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4))]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
               break;
             case "epochs":
               timeline_scale_segments = [data.min_start_date.valueOf(), data.min_start_date.valueOf() * 0.25, data.min_start_date.valueOf() * 0.5, data.min_start_date.valueOf() * 0.75];
@@ -915,16 +895,9 @@ d3.configurableTL = function (unit_width) {
               }
               start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4))]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
               break;
 
             case "centuries":
@@ -936,16 +909,9 @@ d3.configurableTL = function (unit_width) {
               }
               start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4) * -1), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4) * -1)]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
               break;
             case "millenia":
               year_offset = 200;
@@ -957,16 +923,8 @@ d3.configurableTL = function (unit_width) {
               start = Math.floor(data.min_start_date.getUTCFullYear() / year_offset) * year_offset;
               end = (Math.ceil((data.max_end_date.getUTCFullYear() + 1) / year_offset) + 1) * year_offset;
 
-              if (start < 0 && end <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1).setUTCFullYear(("0000" + end).slice(-4))]);
-              } else if (start <= 0) {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date(end, 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1).setUTCFullYear(("0000" + start).slice(-4)), new Date((end + year_offset), 0, 1)]);
-              } else {
-                timeline_scale_segments = time.year.range(new Date(start, 0, 1), new Date((end + year_offset), 0, 1), year_offset);
-                timeline_scale.domain([new Date(start, 0, 1), new Date((end + year_offset), 0, 1)]);
-              }
+              timeline_scale_segments = time.year.range(moment([start, 0, 1]).toDate(), moment([end, 0, 1]).toDate(), year_offset);
+              timeline_scale.domain([moment([start, 0, 1]).toDate(), moment([(end + year_offset), 0, 1]).toDate()]);
               break;
             case "epochs":
               timeline_scale_segments = [data.min_start_date.valueOf()];
